@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  margin: 0;
+  min-width: 25px;
+}
+
+/* Include the padding and border in an element's total width and height */
+/* {
+  box-sizing: border-box;
+*/
+
+/* Remove margins and padding from the list */
+/*ul {
+  margin: 40;
+  padding: 110;
+}*/
+
+/* Style the list items */
+ul li {
+  border: 1px solid;
+  position: relative;
+  left: 850px;
+  top: 40px;
+  cursor: pointer;
+  padding: 14px 10px 14px ;
+  list-style-type: none;
+  font-size: 18px;
+  transition: 0.2s; 
+  width: 300px;
+  resize: both;
+  overflow: auto;
+  
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+/* Darker background-color on hover */
+ul li:hover {
+  background: #ddd;
+}
+
+/* Clear floats after the header */
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* Style the header */
+.header {
+  background-color: #d9d9d9;
+  padding: 30px 40px;
+  color: black;
+  text-align: center;
+}
+
+
+/* Style the input */
+input {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
+}
+
+/* Style the  button */
+.remove {
+  position: absolute;
+  right: 200;
+  top: 780;
+  padding: 8px 10px 3px ;
+}
+
+.remove:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Style the "Add" button */
+.addBtn {
+  position: absolute;
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float: right;
+  left: 450px;
+  top:180px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.addBtn:hover {
+  background-color: #bbb;
+}
+/*
+
+
+/* Style the "Clear" button */
+.clearBtn {
+  position: absolute;
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float:left;
+  left:450px;
+  top:230px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.clearBtn:hover {
+  background-color: #bbb;
+}
+
+/* Style the "Export" button */
+.exportBtn {
+  position: absolute;
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float:left;
+  left:450px;
+  top:280px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.exportBtn:hover {
+  background-color: #bbb;
+}
+
+/* Style the "Sort by Name" button */
+.sortByNameBtn {
+  position: absolute;
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float:left;
+  left:450px;
+  top:330px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.sortByNameBtn:hover {
+  background-color: #bbb;
+}
+
+/* Style the "Sort by Value" button */
+.sortByValueBtn {
+  position: absolute;
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float:left;
+  left:450px;
+  top:380px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.sortByValueBtn:hover {
+  background-color: #bbb;
+}
+
+
+  
+</style>
+</head>
+<body>
+
+<div id="myDIV" class="header">
+  <h2 style="margin:5px">Virginia Saurer's Rebel Development Application Test</h2>
+  <input type="text" id="myInput" placeholder="Add a new Item to List...">
+  <span onclick="addToList()" class="addBtn">Add</span>
+  <span onclick="clearList()" class="clearBtn">Clear</span>
+  <span onclick="exportBtn()" class="exportBtn">Export to JSON</span>
+  <span onclick="sortByNameBtn()" class="sortByNameBtn">Sort by Name</span>
+  <span onclick="sortByValueBtn()" class="sortByValueBtn">Sort by Value</span>
+
+
+</div>
+
+<ul id="myUL">
+  <li>dogs=friend</li>
+  <li>cats=enemy</li>
+  <li>goldfish=bowl</li>
+  <li>snakes=planes</li>
+  <li>sharkes=tornadoes</li>
+</ul>
+
+
+<script>
+
+
+//reading in the input as a key value pair function
+function makingKeyValuePairs() {//argument should be a string
+  var inputString = document.getElementById("myInput").value;
+  var res = inputString.split("=");
+  document.getElementById("demo").innerHTML = res;
+  var inputKey = res[0];
+  var inputValue = res[1];
+  var obj = {    inputKey: inputValue};
+}
+
+
+// The remove button, that is appended to each element in the list
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "remove";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+}
+
+// Click on a remove button to hide the current list item
+var remove = document.getElementsByClassName("remove");
+var i;
+for (i = 0; i < remove.length; i++) {
+  remove[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
+
+// The add button, that adds the input to the list
+function addToList() {
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+	li.appendChild(t)
+    document.getElementById("myUL").appendChild(li);
+  }
+  
+  document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "remove";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < remove.length; i++) {
+    remove[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+
+}
+//clear list button
+function clearList(){
+	var lis = document.getElementById("myUL");
+	var fc = lis.firstChild;
+	
+	while( fc ) {
+		lis.removeChild( fc );
+		fc = lis.firstChild;
+	}
+}
+
+//saving the list to xml file
+
+function exportBtn(){//Still working on this
+
+	/*var xmltext = "<sometag><someothertag></someothertag></sometag>";
+	//var lis = document.createElement('li');
+	var lis = document.getElementById("myUL");
+
+	var filename = "file.xml";
+	
+	//var lis = document.createElement('li');
+	var bb = new Blob([xmltext], {type: 'text/plain'});
+
+	lis.setAttribute('href', window.URL.createObjectURL(bb));
+	lis.setAttribute('download', filename);
+
+	lis.dataset.downloadurl = ['text/plain', lis.download, lis.href].join(':');
+	lis.draggable = true; 
+	lis.classList.add('dragout');
+
+	lis.click();*/
+	//var lis = document.getElementById("myUL");
+	//download(lis, "file.txt", "text/plain");
+	
+	 // XMLWriter will use DOMParser or Microsoft.XMLDOM
+   
+   
+   /*var v = new  XMLWriter("UTF-8", '1.0');
+   v.writeStartDocument(true);
+   v.writeElementString('test','Hello World');
+   v.writeAttributeString('foo','bar');
+   v.writeEndDocument();
+   console.log( v.flush() );
+   
+   */
+   
+
+	
+}
+
+//Both button functions started
+function sortByNameBtn(){
+	
+	var lis = document.getElementById("myUL");
+	lis.sort();
+    
+}
+/*
+function sortByValueBtn(){
+	
+	var lis = document.getElementById("myUL");
+	lis.sort();
+	
+    
+}
+
+
+
+*/
+
+
+</script>
+
+</body>
+</html>
